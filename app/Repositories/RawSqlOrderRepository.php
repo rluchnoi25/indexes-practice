@@ -16,11 +16,11 @@ class RawSqlOrderRepository implements OrderRepositoryInterface
             JOIN users ON users.id = orders.user_id
             JOIN order_product ON order_product.order_id = orders.id
             JOIN products ON products.id = order_product.product_id
-            WHERE users.name LIKE :search1
-            OR products.name LIKE :search2
+            WHERE MATCH(users.name) AGAINST(? IN BOOLEAN MODE)
+            OR MATCH(products.name) AGAINST(? IN BOOLEAN MODE)
         ", [
-            'search1' => '%' . $keyword . '%',
-            'search2' => '%' . $keyword . '%',
+            '+' . $keyword . '*',
+            '+' . $keyword . '*',
         ]);
 
         return $this->hydrate($orders);
