@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\User;
+use App\Observers\UserObserver;
 use App\Repositories\EloquentOrderRepository;
 use App\Repositories\Interfaces\OrderRepositoryInterface;
 use App\Repositories\RawSqlOrderRepository;
@@ -22,6 +24,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        User::observe(UserObserver::class);
     }
 }
