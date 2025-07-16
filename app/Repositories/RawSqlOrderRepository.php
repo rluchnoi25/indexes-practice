@@ -13,10 +13,9 @@ class RawSqlOrderRepository implements OrderRepositoryInterface
         $orders = DB::select("
             SELECT DISTINCT orders.*
             FROM orders
-            JOIN users ON users.id = orders.user_id
             JOIN order_product ON order_product.order_id = orders.id
             JOIN products ON products.id = order_product.product_id
-            WHERE MATCH(users.name) AGAINST(? IN BOOLEAN MODE)
+            WHERE MATCH(orders.user_name) AGAINST(? IN BOOLEAN MODE)
             OR MATCH(products.name) AGAINST(? IN BOOLEAN MODE)
         ", [
             '+' . $keyword . '*',
